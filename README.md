@@ -12,14 +12,14 @@ Implementar Pywa + API Wasap + Selenenium todo en Python
 # Repo Rules (MarQso2)
 
 ## Python environment (Windows)
-- Always run Python commands using this interpreter (do not use system Python):
-  - `C:\Users\Aquino\PycharmProjects\AQUINO_SELENIUM\venv\Scripts\python.exe`
+- Always run Python commands using the interpreter from the virtual environment chosen for this repo.
+- Do not hardcode a venv path unless the user explicitly provides it.
 
 Examples:
 - Install deps:
-  - `"C:\Users\Aquino\PycharmProjects\AQUINO_SELENIUM\venv\Scripts\python.exe" -m pip install -r requirements.txt`
+  - `"<path-to-venv>\Scripts\python.exe" -m pip install -r requirements.txt`
 - Run module:
-  - `"C:\Users\Aquino\PycharmProjects\AQUINO_SELENIUM\venv\Scripts\python.exe" -m facturafast.app.main_whatsapp`
+  - `"<path-to-venv>\Scripts\python.exe" -m facturafast.app.main_whatsapp`
 
 ## Architecture rules
 - `channels/whatsapp/`: only parsing/routing/presentation (no business logic, no IO).
