@@ -2,19 +2,18 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from facturafast.domain.models.item import Item
+from facturafast.integrations.items import google_sheets_repo
+from facturafast.shared.utils import table_image_renderer
 
-from facturafast.channels.whatsapp.types import OutgoingResponse
+
+def fetch_items(deps: dict[str, object]) -> list[Item]:
+    """Fetch items from the configured Google Sheet."""
+    settings = deps["settings"]
+    return google_sheets_repo.fetch_items(settings)
 
 
-@dataclass(slots=True)
-class ItemsService:
-    """Coordinate item retrieval and response rendering."""
-
-    items_repository: object | None = None
-    table_renderer: object | None = None
-
-    def build_items_response(self) -> OutgoingResponse | None:
-        """Build the response for the items command."""
-        return None
-
+def render_items_image(items: list[Item], deps: dict[str, object]) -> bytes:
+    """Render the current items list as an image."""
+    _ = deps
+    return table_image_renderer.render_items_table_png(items, title="Items")

@@ -2,23 +2,28 @@
 
 from __future__ import annotations
 
-from facturafast.app.config.logging import configure_logging
+from flask import Flask
+
+from facturafast.app.config.logging import setup_logging
 from facturafast.app.config.settings import Settings, load_settings
-from facturafast.channels.whatsapp.pywa_app import create_pywa_app
+from facturafast.channels.whatsapp import pywa_app
 
 
-def create_application(settings: Settings | None = None) -> object | None:
-    """Create and wire the application objects."""
-    configure_logging()
-    resolved_settings = settings or load_settings()
-    return create_pywa_app(settings=resolved_settings)
+def build_deps(settings: Settings) -> dict[str, object]:
+    """Build the dependency container for the application."""
+    return {"settings": settings}
 
 
 def main() -> None:
-    """CLI entrypoint placeholder."""
-    create_application()
+    """Run the WhatsApp application server."""
+    setup_logging()
+    settings = load_settings()
+    flask_app = Flask(__name__)
+    wa = pywa_app.create_wa(flask_app, settings)
+    deps = build_deps(settings)
+    pywa_app.register_handlers(wa, deps)
+    flask_app.run(host="0.0.0.0", port=settings.PORT)
 
 
 if __name__ == "__main__":
     main()
-

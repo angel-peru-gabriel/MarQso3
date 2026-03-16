@@ -11,6 +11,7 @@
 
 ## Environment
 - Use the Python interpreter from the virtual environment chosen by the user for this repository.
+- Current interpreter for this repo: `C:\Users\Aquino\PycharmProjects\AQUINO_SELENIUM\venv\Scripts\python.exe`
 - Do not hardcode a virtual environment path unless the user explicitly provides it.
 - Do not create or switch virtual environments automatically without user approval.
 
@@ -30,4 +31,3 @@ Examples:
 ## Security
 - Never commit `.env`, tokens, secrets, or credential files.
 - Never print or log secrets in plaintext.
-

@@ -2,22 +2,22 @@
 
 from __future__ import annotations
 
-from typing import Any
+import logging
 
-from facturafast.channels.whatsapp.types import IncomingMessage, OutgoingResponse
+from facturafast.channels.whatsapp import presenters
+from facturafast.channels.whatsapp.types import IncomingMessage
+from facturafast.services import conversation_service
 
-
-def map_pywa_message(pywa_message: Any) -> IncomingMessage:
-    """Translate a native PyWa message into the internal DTO."""
-    _ = pywa_message
-    return IncomingMessage(sender_id="", text="")
+logger = logging.getLogger(__name__)
 
 
-def handle_incoming_message(
-    message: IncomingMessage,
-    conversation_service: Any,
-) -> OutgoingResponse | None:
-    """Forward the DTO to the application service layer."""
-    _ = message, conversation_service
-    return None
-
+def on_text_message(msg, deps: dict[str, object]) -> None:
+    """Translate a PyWa text message into the application flow."""
+    incoming = IncomingMessage(
+        user_id=msg.from_user.wa_id,
+        text=msg.text or "",
+        message_id=getattr(msg, "id", None),
+    )
+    logger.info("Received WhatsApp text message from %s", incoming.user_id)
+    response = conversation_service.handle_incoming(incoming, deps)
+    presenters.reply(msg, response, deps)

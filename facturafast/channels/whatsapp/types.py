@@ -3,23 +3,23 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Literal
 
 
 @dataclass(slots=True)
 class IncomingMessage:
     """Internal representation of an incoming WhatsApp message."""
 
-    sender_id: str
+    user_id: str
     text: str
-    message_id: str = ""
-    sender_name: str = ""
+    message_id: str | None = None
 
 
 @dataclass(slots=True)
 class OutgoingResponse:
-    """Internal representation of a response to present on WhatsApp."""
+    """Internal representation of an outbound WhatsApp response."""
 
-    text: str = ""
+    kind: Literal["text", "image"]
+    text: str | None = None
     image_bytes: bytes | None = None
-    image_caption: str = ""
-
+    caption: str | None = None
